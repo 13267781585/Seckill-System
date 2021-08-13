@@ -121,4 +121,23 @@ public class RabbitmqConfig {
     public Binding binding1(@Qualifier(RabbitmqToolName.HANDLER_ORDER_QUEUE)Queue queue,@Qualifier(RabbitmqToolName.HANDLER_ORDER_EXCHANGE)Exchange exchange){
         return BindingBuilder.bind(queue).to(exchange).with(RabbitmqToolName.HANDLER_ORDER_KEY).noargs();
     }
+
+    @Bean(RabbitmqToolName.CREATE_ORDER_QUEUE)
+    public Queue queue2(){
+        Map<String,Object> map = new HashMap<>();
+        map.put("x-max-length",RabbitmqToolName.CREATE_ORDER_QUEUE_LENGTH);
+        map.put("x-max-priority",RabbitmqToolName.CREATE_ORDER_QUEUE_PRIORITY);
+        map.put("x-overflow", RabbitmqProperties.REJECT_PUBLISH);
+        return QueueBuilder.nonDurable(RabbitmqToolName.CREATE_ORDER_QUEUE).withArguments(map).build();
+    }
+
+    @Bean(RabbitmqToolName.CREATE_ORDER_EXCHANGE)
+    public Exchange exchange2(){
+        return ExchangeBuilder.directExchange(RabbitmqToolName.CREATE_ORDER_EXCHANGE).durable(false).build();
+    }
+
+    @Bean
+    public Binding binding2(@Qualifier(RabbitmqToolName.CREATE_ORDER_QUEUE)Queue queue,@Qualifier(RabbitmqToolName.CREATE_ORDER_EXCHANGE)Exchange exchange){
+        return BindingBuilder.bind(queue).to(exchange).with(RabbitmqToolName.CREATE_ORDER_KEY).noargs();
+    }
 }

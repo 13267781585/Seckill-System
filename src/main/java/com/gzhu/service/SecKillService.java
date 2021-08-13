@@ -15,6 +15,7 @@ import com.gzhu.util.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
@@ -36,6 +37,9 @@ public class SecKillService {
     private RedisUtils redisUtils;
     @Autowired
     private RabbitmqUtils rabbitmqUtils;
+
+    @Value("${sekill.getLock.count}")
+    private int GET_LOCK_COUNT;
 
     public void secKill(Order order) throws Exception {
        Integer userId = order.getUserId();
@@ -69,7 +73,7 @@ public class SecKillService {
         String uuid = UUID.randomUUID().toString() + "_" + userId;
         int count = 0;
         while(!redisUtils.setIfAbsent(key,uuid)){
-            if(++count>2){
+            if(++count>GET_LOCK_COUNT){
                 System.out.println("抢购失败!");
                 return;
             }
@@ -84,7 +88,7 @@ public class SecKillService {
 
         redisUtils.set("seckill:goodsCount:" + goodId,--goodsNum);
         releaseLock(goodId,uuid);
-        System.out.println("抢购成功，当前库存:" + --goodsNum);
+        System.out.println("抢购成功，当前库存:" + goodsNum);
 
         Order orderNew = new Order();
         orderNew.setUserId(userId);
@@ -95,7 +99,7 @@ public class SecKillService {
         //orderMapper.insert(orderNew);
         //异步下单 固定事件支付
 
-        rabbitmqUtils.sendMessageByConfirm(RabbitmqSendData.builder(RabbitmqToolName.EXPIRE_ORDER_EXCHANGE,RabbitmqToolName.EXPIRE_ORDER_KEY,
+        rabbitmqUtils.sendMessageByConfirm(RabbitmqSendData.builder(RabbitmqToolName.CREATE_ORDER_EXCHANGE,RabbitmqToolName.CREATE_ORDER_KEY,
                 JSONObject.toJSONString(orderNew)));
     }
 

@@ -28,5 +28,6 @@ public class InitDataListener implements ApplicationRunner {
             redisUtils.set("seckill:goodsCount:"+goods.getId(),goods.getStock());
         }
         redisUtils.del("seckill:data:count");
+        redisUtils.del("seckill:order:consumerOrders");
     }
 }

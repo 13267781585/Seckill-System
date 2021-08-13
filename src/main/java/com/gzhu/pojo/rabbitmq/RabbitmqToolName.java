@@ -17,4 +17,11 @@ public class RabbitmqToolName {
     public static final String HANDLER_ORDER_KEY = "handler_order_key";
     public static final long HANDLER_ORDER_QUEUE_LENGTH = 100;
     public static final long HANDLER_ORDER_QUEUE_PRIORITY = 8;
+
+    //订单生成处理
+    public static final String CREATE_ORDER_QUEUE = "create_order_queue";
+    public static final String CREATE_ORDER_EXCHANGE = "create_order_exchange";
+    public static final String CREATE_ORDER_KEY = "create_order_key";
+    public static final long CREATE_ORDER_QUEUE_LENGTH = 100;
+    public static final long CREATE_ORDER_QUEUE_PRIORITY = 10;
 }

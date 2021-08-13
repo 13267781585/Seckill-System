@@ -6,7 +6,7 @@ import org.apache.ibatis.jdbc.SQL;
 public class OrderSqlProvider {
     public String insertSelective(Order record) {
         SQL sql = new SQL();
-        sql.INSERT_INTO("order");
+        sql.INSERT_INTO("`order`");
         
         if (record.getId() != null) {
             sql.VALUES("id", "#{id,jdbcType=INTEGER}");
@@ -41,7 +41,7 @@ public class OrderSqlProvider {
 
     public String updateByPrimaryKeySelective(Order record) {
         SQL sql = new SQL();
-        sql.UPDATE("order");
+        sql.UPDATE("`order`");
         
         if (record.getGoodId() != null) {
             sql.SET("good_id = #{goodId,jdbcType=INTEGER}");

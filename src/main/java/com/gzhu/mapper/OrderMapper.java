@@ -1,25 +1,20 @@
 package com.gzhu.mapper;
 
 import com.gzhu.pojo.order.Order;
-import org.apache.ibatis.annotations.Delete;
-import org.apache.ibatis.annotations.Insert;
-import org.apache.ibatis.annotations.InsertProvider;
-import org.apache.ibatis.annotations.Result;
-import org.apache.ibatis.annotations.Results;
-import org.apache.ibatis.annotations.Select;
-import org.apache.ibatis.annotations.Update;
-import org.apache.ibatis.annotations.UpdateProvider;
+import org.apache.ibatis.annotations.*;
 import org.apache.ibatis.type.JdbcType;
+
+import java.util.List;
 
 public interface OrderMapper {
     @Delete({
-        "delete from order",
+        "delete from `order`",
         "where id = #{id,jdbcType=INTEGER}"
     })
     int deleteByPrimaryKey(Integer id);
 
     @Insert({
-        "insert into order (id, good_id, ",
+        "insert into `order` (id, good_id, ",
         "user_id, status, ",
         "order_uuid, create_time, ",
         "pay_time)",
@@ -31,12 +26,13 @@ public interface OrderMapper {
     int insert(Order record);
 
     @InsertProvider(type=OrderSqlProvider.class, method="insertSelective")
+    @Options(useGeneratedKeys = true,keyColumn = "id",keyProperty = "id")
     int insertSelective(Order record);
 
     @Select({
         "select",
         "id, good_id, user_id, status, order_uuid, create_time, pay_time",
-        "from order",
+        "from `order`",
         "where id = #{id,jdbcType=INTEGER}"
     })
     @Results({
@@ -54,7 +50,7 @@ public interface OrderMapper {
     int updateByPrimaryKeySelective(Order record);
 
     @Update({
-        "update order",
+        "update `order`",
         "set good_id = #{goodId,jdbcType=INTEGER},",
           "user_id = #{userId,jdbcType=INTEGER},",
           "status = #{status,jdbcType=INTEGER},",
@@ -64,4 +60,13 @@ public interface OrderMapper {
         "where id = #{id,jdbcType=INTEGER}"
     })
     int updateByPrimaryKey(Order record);
+
+    @Select({
+            "select",
+            "id, good_id, user_id, status, order_uuid, create_time, pay_time",
+            "from `order`",
+            "where user_id = #{userId,jdbcType=INTEGER} and ",
+            "order_uuid = #{uuid,jdbcType=CHAR}"
+    })
+    List<Order> selectByUserIdAndUUid(@Param("userId") Integer userId, @Param("uuid") String uuid);
 }
