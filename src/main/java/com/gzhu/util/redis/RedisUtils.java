@@ -1,10 +1,15 @@
-package com.gzhu.util;
+package com.gzhu.util.redis;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.io.ClassPathResource;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.script.DefaultRedisScript;
+import org.springframework.scripting.ScriptSource;
+import org.springframework.scripting.support.ResourceScriptSource;
 import org.springframework.stereotype.Component;
 import org.springframework.util.CollectionUtils;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -23,6 +28,21 @@ public class RedisUtils {
 
     public RedisUtils(RedisTemplate<String, Object> redisTemplate) {
         this.redisTemplate = redisTemplate;
+    }
+
+    /**
+     * 执行lua文件
+     */
+    public Object eval(String path,List keyList,Class<?> resultType,Object... argvList){
+        ClassPathResource resource = new ClassPathResource(path);
+        ScriptSource scriptSource = new ResourceScriptSource(resource);
+        DefaultRedisScript defaultRedisScript = new DefaultRedisScript();
+        defaultRedisScript.setScriptSource(scriptSource);
+
+        //设置返回类型
+        defaultRedisScript.setResultType(resultType);
+
+        return redisTemplate.execute(defaultRedisScript,keyList,argvList);
     }
 
     /**

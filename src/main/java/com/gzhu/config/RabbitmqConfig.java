@@ -3,7 +3,7 @@ package com.gzhu.config;
 import com.gzhu.pojo.rabbitmq.RabbitmqProperties;
 import com.gzhu.pojo.rabbitmq.RabbitmqSendData;
 import com.gzhu.pojo.rabbitmq.RabbitmqToolName;
-import com.gzhu.util.RedisUtils;
+import com.gzhu.util.redis.RedisUtils;
 import org.springframework.amqp.core.*;
 import org.springframework.amqp.rabbit.connection.ConnectionFactory;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;

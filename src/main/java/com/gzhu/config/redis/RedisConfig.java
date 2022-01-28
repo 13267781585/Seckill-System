@@ -1,7 +1,8 @@
-package com.gzhu.config;
+package com.gzhu.config.redis;
 import com.fasterxml.jackson.annotation.JsonAutoDetect;
 import com.fasterxml.jackson.annotation.PropertyAccessor;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CachingConfigurerSupport;
 import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
@@ -10,6 +11,11 @@ import org.springframework.data.redis.connection.RedisConnectionFactory;
 import org.springframework.data.redis.core.*;
 import org.springframework.data.redis.serializer.Jackson2JsonRedisSerializer;
 import org.springframework.data.redis.serializer.StringRedisSerializer;
+import redis.clients.jedis.HostAndPort;
+import redis.clients.jedis.JedisCluster;
+
+import java.util.HashSet;
+import java.util.Set;
 
 /**
  * redis配置类
@@ -21,6 +27,24 @@ import org.springframework.data.redis.serializer.StringRedisSerializer;
 @Configuration
 @EnableCaching //开启注解
 public class RedisConfig extends CachingConfigurerSupport {
+    @Autowired
+    private RedisProperties redisProperties;
+
+//    @Bean
+//    public JedisCluster getJedisCluster(){
+//        //获取redis集群的ip及端口号等相关信息；
+//        String[] serverArray = redisProperties.getNodes().split(",");
+//        Set<HostAndPort> nodes = new HashSet<>();
+//
+//        //遍历add到HostAndPort中；
+//        for (String ipPort : serverArray) {
+//            String[] ipPortPair = ipPort.split(":");
+//            nodes.add(new HostAndPort(ipPortPair[0].trim(), Integer.valueOf(ipPortPair[1].trim())));
+//        }
+//        //构建对象并返回；
+//        return new JedisCluster(nodes, redisProperties.getCommandTimeout());
+//    }
+
 
     /**
      * retemplate相关配置

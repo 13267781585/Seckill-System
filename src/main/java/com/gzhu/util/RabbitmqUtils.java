@@ -2,6 +2,7 @@ package com.gzhu.util;
 
 import com.alibaba.fastjson.JSONObject;
 import com.gzhu.pojo.rabbitmq.RabbitmqSendData;
+import com.gzhu.util.redis.RedisUtils;
 import org.springframework.amqp.core.Message;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.rabbit.support.CorrelationData;

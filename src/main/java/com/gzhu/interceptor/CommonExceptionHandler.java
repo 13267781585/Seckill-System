@@ -14,7 +14,7 @@ public class CommonExceptionHandler {
     @ExceptionHandler(value = Exception.class)
     public ServerReturnDTO exceptionHandler(Exception e)
     {
-        log.warn(e.getMessage());
+        e.printStackTrace();
         return ServerReturnDTO.createByFailAndMsg(e.getMessage());
     }
 

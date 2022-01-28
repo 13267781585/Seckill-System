@@ -3,7 +3,7 @@ package com.gzhu.interceptor;
 import com.gzhu.interceptor.interfaces.ReplayAttackDefense;
 import com.gzhu.pojo.user.UniqueToken;
 import com.gzhu.util.EncryptUtils;
-import com.gzhu.util.RedisUtils;
+import com.gzhu.util.redis.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -97,7 +97,4 @@ public class ReplayAttackInterceptor implements HandlerInterceptor {
         return true;
     }
 
-    public static void main(String[] args) {
-        System.out.println(System.currentTimeMillis());
-    }
 }

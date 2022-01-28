@@ -10,8 +10,7 @@ import com.gzhu.pojo.order.OrderStatus;
 import com.gzhu.pojo.rabbitmq.RabbitmqSendData;
 import com.gzhu.pojo.rabbitmq.RabbitmqToolName;
 import com.gzhu.util.RabbitmqUtils;
-import com.gzhu.util.RedisUtils;
-import com.gzhu.util.StringUtils;
+import com.gzhu.util.redis.RedisUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -86,7 +85,7 @@ public class SecKillService {
             return;
         }
 
-        redisUtils.set("seckill:goodsCount:" + goodId,--goodsNum);
+        redisUtils.decr("seckill:goodsCount:" + goodId,1);
         releaseLock(goodId,uuid);
         System.out.println("抢购成功，当前库存:" + goodsNum);
 

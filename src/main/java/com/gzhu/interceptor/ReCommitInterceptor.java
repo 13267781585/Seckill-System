@@ -3,7 +3,7 @@ package com.gzhu.interceptor;
 import com.gzhu.interceptor.interfaces.ReCommitDefense;
 import com.gzhu.pojo.user.User;
 import com.gzhu.util.EncryptUtils;
-import com.gzhu.util.RedisUtils;
+import com.gzhu.util.redis.RedisUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -20,7 +20,7 @@ import java.lang.reflect.Method;
 import java.util.Objects;
 
 @Component
-public class ReCommitInterceptor implements HandlerInterceptor {
+public class  ReCommitInterceptor implements HandlerInterceptor {
     @Value("${reCommit.enable}")
     private String RECOMMIT_ENABLE;
 
