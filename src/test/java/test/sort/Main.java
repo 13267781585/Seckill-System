@@ -1,168 +1,121 @@
 package test.sort;
 
-import java.util.Arrays;
+import org.junit.platform.commons.util.CollectionUtils;
+
+import java.util.*;
 
 public class Main {
     public static void main(String[] args) {
-        int[] arr = {6,3,8,4,2,2,6,};
+        int[] arr = {6,3,8,2,2,0,0,2,4,2,2,6,-1,-4,0,10,0,-11,90};
+        //simpleSort(arr);
+        //xierSort(arr);
         //quickSort(arr,0,arr.length-1);
-//        HeapSort(arr);
-        guibing(arr,0,arr.length-1,new int[arr.length]);
+        //heapSort(arr);
+        //guibing(arr,0,arr.length-1,new int[arr.length]);
+        //maopao(arr);
+        //xuanzhe(arr);
+        //jishu(arr);
+        tongpaixu(arr);
         System.out.println(Arrays.toString(arr));
     }
-
-    public static void quickSort(int[] arr,int left,int right){
-        if(left<right){
-            int pos = partition(arr,left,right);
-            quickSort(arr,left,pos-1);
-            quickSort(arr,pos+1,right);
-        }
-    }
-
-    public static int partition(int[] arr,int left,int right){
-        int key = arr[right];
-        int l = left;
-        int r = right;
-        while(l<r){
-            while(l<r&&arr[l]<=key)
-            {
-                l++;
-            }
-            while(l<r&&arr[r]>=key){
-                r--;
-            }
-            int temp = arr[l];
-            arr[l] = arr[r];
-            arr[r] = temp;
-        }
-        arr[right] = arr[l];
-        arr[l] = key;
-        return l;
-    }
-
-//    public static void headSort(int[] arr)
-//    {
-//        int len = arr.length-1;
-//        buildMaxHead(arr);
-//        while(len>0){
-//            int temp = arr[0];
-//            arr[0] = arr[len];
-//            arr[len] = temp;
-//            adjustHead(arr,0,--len);
-//        }
-//    }
-//    public static void buildMaxHead(int[] arr){
-//        for(int i=arr.length/2;i>=0;i--){
-//            adjustHead(arr,i,arr.length-1);
-//        }
-//    }
-//    public static void adjustHead(int[] arr,int index,int len){
-//        int left = index * 2 + 1;
-//        int right = index * 2 + 2;
-//        int maxIndex = index;
-//        if(left<=len&&arr[left]>arr[maxIndex]){
-//            maxIndex = left;
-//        }
-//        if(right<=len&&arr[right]>arr[maxIndex])
-//        {
-//            maxIndex = right;
-//        }
-//        if(maxIndex!=index)
-//        {
-//            int temp = arr[maxIndex];
-//            arr[maxIndex] = arr[index];
-//            arr[index] = temp;
-//            adjustHead(arr,maxIndex,len);
-//        }
-//    }
-
-
-    public static int[] HeapSort(int[] array) {
-        int len = array.length-1;
-        if (len == 0) return array;
-        //1.构建一个大根堆
-        buildMaxHeap(array);
-        //2.循环将堆顶（最大值）与堆尾交换，删除堆尾元素，然后重新调整大根堆
-        while (len > 0) {
-            swap(array, 0, len);
-            len--; //原先的堆尾进入有序区，删除堆尾元素
-            adjustHeap(array, 0,len); //重新调整大根堆
-        }
-        return array;
-    }
-
-    /**
-     * 自顶向下调整以 i 为根的堆为大根堆
-     * @param array
-     * @param i
-     */
-    public static void adjustHeap(int[] array, int i,int len) {
-        int maxIndex = i;
-        //如果有左子树，且左子树大于父节点，则将最大指针指向左子树
-        if (2 * i + 1 < len && array[2 * i + 1] > array[maxIndex])
-            maxIndex = 2 * i + 1;
-        //如果有右子树，且右子树大于父节点，则将最大指针指向右子树
-        if (2 * i + 2 < len && array[2 * i + 2] > array[maxIndex])
-            maxIndex = 2 * i + 2;
-        //如果父节点不是最大值，则将父节点与最大值交换，并且递归调整与父节点交换的位置。
-        if (maxIndex != i) {
-            swap(array, maxIndex, i);
-            adjustHeap(array, maxIndex,len);
-        }
-    }
-
-    /**
-     * 自底向上构建初始大根堆
-     * @param array
-     */
-    public static void buildMaxHeap(int[] array) {
-        //从最后一个非叶子节点开始自底向上构造大根堆
-        for (int i = (array.length - 1) / 2; i >= 0; i--) {
-            adjustHeap(array, i, array.length-1);
-        }
-    }
-
-    public static void swap(int[] arr,int var1,int var2)
+    //kong k shi n+k 稳定
+    public static void tongpaixu(int[] arr)
     {
-        int temp = arr[var1];
-        arr[var1] = arr[var2];
-        arr[var2] = temp;
+        int len = arr.length;
+        int maxValue = arr[0];
+        for(int i=0;i<len;i++)
+        {
+            maxValue = Math.max(maxValue,arr[i]);
+        }
+        int arrLen = maxValue / len + 1;
+        ArrayList<ArrayList<Integer>> count = new ArrayList<>(arrLen);
+        for(int i=0;i<arrLen;i++)
+        {
+            count.add(new ArrayList<>());
+        }
+        for(int i=0;i<len;i++){
+            int index = arr[i] / len;
+            count.get(index).add(arr[i]);
+        }
+        for(int i=0;i<arrLen;i++){
+            Collections.sort(count.get(i));
+        }
+        int arrIndex = 0,countIndex = 0;
+        while(arrIndex<len)
+        {
+            while(count.get(countIndex).size()==0){
+                countIndex++;
+            }
+            ArrayList<Integer> list = count.get(countIndex);
+            for(int temp:list){
+                arr[arrIndex++] = temp;
+            }
+            countIndex++;
+        }
+    }
+    //kong k shi n+k
+    public static void jishu(int[] arr)
+    {
+        int maxValue = arr[0],minValue = arr[0];
+        int len = arr.length;
+        for(int i=0;i<len;i++)
+        {
+            maxValue = Math.max(maxValue,arr[i]);
+            minValue = Math.min(minValue,arr[i]);
+        }
+        int arrLen = maxValue - minValue + 1;
+        int[] count = new int[arrLen];
+        for(int i=0;i<len;i++){
+            count[arr[i]-minValue]++;
+        }
+        int countIndex = 0,arrIndex = 0;
+        while(arrIndex<len){
+            while(count[countIndex]==0){
+                countIndex++;
+            }
+            arr[arrIndex] = countIndex + minValue;
+            count[countIndex]--;
+            arrIndex++;
+        }
     }
 
-    public static void guibing(int[] arr,int left,int right,int[] temp){
-        if(left<right){
-            int mid = (left + right) / 2;
-            guibing(arr,left,mid,temp);
-            guibing(arr,mid+1,right,temp);
-            merger(arr,left,right,temp);
+    public static void xuanzhe(int[] arr)
+    {
+        int len = arr.length;
+        for(int i=0;i<len-1;i++){
+            int minIndex = i;
+            for(int j=i;j<len;j++){
+                if(arr[minIndex]>arr[j]){
+                    minIndex = j;
+                }
+            }
+            swap(arr,i,minIndex);
         }
     }
-    public static void merger(int[] arr,int left,int right,int[] temp)
+
+    public static void maopao(int[] arr)
     {
-        int l = left;
-        int mid = (left + right) / 2;
-        int r = mid + 1;
-        int res = 0;
-        while(l<=mid&&r<=right)
-        {
-            if(arr[l]<arr[r]){
-                temp[res++] = arr[r++];
-            }else{
-                temp[res++] = arr[l++];
+        int len = arr.length;
+        for(int i=0;i<len;i++){
+            boolean flag = true;
+            for(int j=0;j<len-i-1;j++){
+                if(arr[j]>arr[j+1]){
+                    flag = false;
+                    swap(arr,j,j+1);
+                }
+            }
+            if(flag){
+                break;
             }
         }
-        while(l<=mid)
-        {
-            temp[res++] = arr[l++];
-        }
-        while(r<=right)
-        {
-            temp[res++] = arr[r++];
-        }
-        l = left;
-        res = 0;
-        while (l<=right){
-            arr[l++] = temp[res++];
-        }
     }
+
+    public static void swap(int[] arr,int i,int j)
+    {
+        int temp = arr[i];
+        arr[i] = arr[j];
+        arr[j] = temp;
+    }
+
+
 }

@@ -17,6 +17,7 @@ public class Server {
         InputStream in = socket.getInputStream();
         OutputStream out = socket.getOutputStream();
         out.write(content.getBytes());
+        in.read();
 
 
     }

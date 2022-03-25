@@ -16,7 +16,5 @@ public class Main {
         InputStream in = socket.getInputStream();
         OutputStream out = socket.getOutputStream();
         out.write(content.getBytes());
-
-
     }
 }

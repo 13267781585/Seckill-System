@@ -6,7 +6,6 @@ import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
-        Externalizable
         int[][] arr = {
                         {29,54,67,71,85},
                         {98,88,44,11,22},

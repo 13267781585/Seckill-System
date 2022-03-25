@@ -5,7 +5,8 @@
 	ARGV[2]  最大存储令牌数
 	ARGV[3] 时间间隔
 	ARGV[4] 上次请求时间
-	
+	key需要加上{} 保证数据在一个节点
+	lua脚本只能操作一个节点上的数据
   ]]
 local apiMethodName = "seckill:api:limiter:" .. KEYS[1]
 local nowTokenNumKey = apiMethodName .. ":nowTokenNumKey"
