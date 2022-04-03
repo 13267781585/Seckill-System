@@ -18,7 +18,7 @@ import java.util.List;
 
 @RunWith(SpringRunner.class)
 @SpringBootTest(classes = {SecKillApplication.class})
-public class Main {
+public class PrintNum {
     @Autowired
     RedisTemplate redisTemplate;
     @Autowired
